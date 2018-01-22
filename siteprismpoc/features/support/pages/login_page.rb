@@ -1,20 +1,19 @@
 class LoginPage < SitePrism::Page
-  #set_url "/"
 
-  element :account_menu, 'my-account-link'
-  element :cpf_field, 'login-cpf'
-  element :continue_btn, 'send2'
-
+  element :account_menu, 'a[class=my-account-link]'
+  element :cpf_field, 'input[id=login-cpf]'
+  element :continue_btn, 'button[id=send2]'
   #error messages
   element :cpf_error_msg, '#jq-loginvalidation-mgs'
 
   def login (cpf)
-    cpf_field.set cpf
+    p wait_until_cpf_field_visible
+    cpf.each_char{ |item| cpf_field.send_keys item}
     continue_btn.click
   end
 
   def clickMenu
-    account_menu.click
+    account_menu.click if wait_until_account_menu_visible
   end
 
 end
